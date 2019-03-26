@@ -6,7 +6,7 @@ import routes from './router/index'
 import Main from './components/layouts/Main.vue'
 import vueIO from 'vue-socket.io';
 import VueChatScroll from 'vue-chat-scroll'
-
+import vueMoment from 'vue-moment'
 import {
   store
 } from './store/store'
@@ -15,6 +15,7 @@ window.eventBus = new Vue()
 
 Vue.config.productionTip = false
 Vue.use(VueChatScroll)
+Vue.use(vueMoment)
 Vue.use(VueRouter)
 Vue.use(new vueIO({
   debug: true,

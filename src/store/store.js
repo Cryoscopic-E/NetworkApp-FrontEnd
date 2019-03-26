@@ -46,6 +46,39 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    deletePost(context, id) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      return new Promise((resolve, reject) => {
+        axios.delete('/deletePost/' + id).then(res => {
+          resolve(res.data)
+        }).catch(rej => {
+          reject(rej)
+        })
+      })
+    },
+    createNewPost(context, postData) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      return new Promise((resolve, reject) => {
+        axios.post('/createPost', {
+          text: postData.text
+        }).then(res => {
+          resolve(res.data)
+        }).catch(rej => {
+          reject(rej)
+        })
+      })
+    },
+    getPostsInProject(context) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      return new Promise((resolve, reject) => {
+        axios.get('/getPosts').then(res => {
+          resolve(res.data)
+        }).catch(rej => {
+          reject(rej)
+        })
+      })
+    },
     signup(context, data) {
       return new Promise((resolve, reject) => {
         axios.post('/signup', {
@@ -58,7 +91,7 @@ export const store = new Vuex.Store({
             resolve(response)
           })
           .catch(error => {
-            reject(error)
+            reject(error.response)
           })
       })
     },

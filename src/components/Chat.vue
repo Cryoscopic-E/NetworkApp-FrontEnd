@@ -81,7 +81,6 @@ export default {
   },
   created: function() {
     this.me = this.$store.getters.getUserName;
-    console.log("me", this.me);
   },
   sockets: {
     message: function({ message, from }) {

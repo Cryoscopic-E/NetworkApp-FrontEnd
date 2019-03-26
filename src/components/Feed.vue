@@ -4,9 +4,12 @@
       <li v-for="post in posts" class="post default-border default-shadow">
         <div class="post-author">
           {{post.author}}
+          <span style="font-size:10px">{{post.createdAt | moment("Do MMM YYYY")}}</span>
           <!-- <div class="post-author-avatar">
           <img height="60" alt="post author avatar" src> Lorenzo James
           </div>-->
+
+          <i class="fas fa-trash-alt" @click="deletePost(post)"></i>
         </div>
         <div class="post-media"></div>
         <div class="post-body">
@@ -19,12 +22,44 @@
 
 
 
-	<script>
+<script>
 export default {
-  data: () => {
+  data() {
     return {
       posts: []
     };
+  },
+  created() {
+    this.$store
+      .dispatch("getPostsInProject")
+      .then(response => {
+        this.posts = response.reverse();
+      })
+      .catch(error => {});
+  },
+  sockets: {
+    post({ post }) {
+      this.posts.unshift(post);
+    },
+    postRemoved({ id }) {
+      this.posts = this.posts.filter(el => {
+        return el._id !== id;
+      });
+    }
+  },
+  methods: {
+    deletePost(p) {
+      console.log("try to delete", p._id);
+      this.$store
+        .dispatch("deletePost", p._id)
+        .then(response => {
+          this.$socket.emit("removePost", {
+            id: response._id,
+            room: this.$store.getters.getProjectName
+          });
+        })
+        .catch(error => {});
+    }
   }
 };
 </script>

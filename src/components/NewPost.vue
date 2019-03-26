@@ -9,14 +9,34 @@
     <div class="new-post-actions">
       <i class="far fa-file-alt icon"></i>
       <i class="far fa-images icon"></i>
-      <button class="primary-bg default-border-radius" id="add-post">Add Post</button>
+      <button class="primary-bg default-border-radius" id="add-post" @click="submitNewPost">Add Post</button>
     </div>
   </div>
 </template>
 
 
 <script>
-export default {};
+export default {
+  methods: {
+    submitNewPost() {
+      const text = document.querySelector("#post-text").value;
+      document.querySelector("#post-text").value = "";
+      if (text.trim() === "") {
+        return;
+      } else {
+        this.$store
+          .dispatch("createNewPost", { text })
+          .then(res => {
+            this.$socket.emit("newPost", {
+              post: res,
+              room: this.$store.getters.getProjectName
+            });
+          })
+          .catch(err => {});
+      }
+    }
+  }
+};
 </script>
 
 <style>
