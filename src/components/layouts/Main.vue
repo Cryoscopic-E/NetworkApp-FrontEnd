@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <ul class="nav">
-      <h4 class="title">{{ projectName }}</h4>
+      <li class="title">{{ projectName }}</li>
       <li>
         <router-link :to="{name:'home'}">Home</router-link>
       </li>
@@ -48,7 +48,6 @@ export default {
 .title {
   margin-right: auto;
   margin-left: 20px;
-  margin-top: 10px;
 }
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;

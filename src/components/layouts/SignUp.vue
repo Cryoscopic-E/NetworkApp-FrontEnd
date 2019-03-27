@@ -2,6 +2,7 @@
   <div class="login-wrapper">
     <div class="login-left">
       <img height="400" alt="application logo" src="../../assets/logo.png">
+      <a href="http://validator.w3.org/check/referer" rel="nofollow" title="Validate as HTML5">HTML5</a>
     </div>
     <form action="#" class="login-right" @submit.prevent="signup">
       <h4>Signup</h4>
@@ -25,7 +26,7 @@
         <button type="submit" class="btn btn-primary pull-right">Signup</button>
       </div>
 
-      <div v-if="serverError" class="server-error">{{ serverError }}</div>
+      <div v-if="error" class="text-error">{{ error }}</div>
     </form>
   </div>
 </template>
@@ -38,7 +39,7 @@ export default {
       email: "",
       project: "",
       password: "",
-      serverError: ""
+      error: ""
     };
   },
   methods: {
@@ -54,7 +55,7 @@ export default {
           this.$router.push({ name: "login" });
         })
         .catch(error => {
-          this.serverError = error.response.data;
+          this.error = error.data;
           this.password = "";
         });
     }
