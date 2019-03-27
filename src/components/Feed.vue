@@ -11,7 +11,9 @@
 
           <i class="fas fa-trash-alt" @click="deletePost(post)"></i>
         </div>
-        <div class="post-media"></div>
+        <div class="post-media">
+          <img v-if="post.image" v-bind:src="'data:image/png;base64,'+ btoa(post.image.data)">
+        </div>
         <div class="post-body">
           <p class="post-text">{{post.text}}</p>
         </div>
@@ -49,7 +51,6 @@ export default {
   },
   methods: {
     deletePost(p) {
-      console.log("try to delete", p._id);
       this.$store
         .dispatch("deletePost", p._id)
         .then(response => {
@@ -59,6 +60,9 @@ export default {
           });
         })
         .catch(error => {});
+    },
+    btoa(bin) {
+      return Buffer.from(bin, "binary").toString("base64");
     }
   }
 };

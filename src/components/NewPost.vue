@@ -7,8 +7,10 @@
       <textarea name="post-text" id="post-text" cols="30" rows="5" placeholder="New Post"></textarea>
     </div>
     <div class="new-post-actions">
-      <i class="far fa-file-alt icon"></i>
-      <i class="far fa-images icon"></i>
+      <form action>
+        <input type="file" id="imgupload" style="display:none">
+        <i class="far fa-images icon" @click="uploadImage"></i>
+      </form>
       <button class="primary-bg default-border-radius" id="add-post" @click="submitNewPost">Add Post</button>
     </div>
   </div>
@@ -34,6 +36,9 @@ export default {
           })
           .catch(err => {});
       }
+    },
+    uploadImage() {
+      document.querySelector("#imgupload").trigger("click");
     }
   }
 };
