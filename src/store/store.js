@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 Vue.use(Vuex)
-axios.defaults.baseURL = 'http://127.0.0.1:4000'
+axios.defaults.baseURL = 'https://na-backend-server.herokuapp.com'
 
 export const store = new Vuex.Store({
   state: {
@@ -151,16 +151,17 @@ export const store = new Vuex.Store({
           })
           .then(response => {
             const token = response.data.token
-            console.log(response.data.user)
             localStorage.setItem('auth-token', token)
             localStorage.setItem('username', response.data.user.username)
             localStorage.setItem('project', response.data.user.project)
-            localStorage.setItem('avatar', window.atob(response.data.user.avatar))
+            const binAvatar = window.atob(response.data.user.avatar)
+            localStorage.setItem('avatar', binAvatar)
             context.commit('retrieveToken', {
-              token,
-              ...response.data.user
+              token: token,
+              username: response.data.user.username,
+              project: response.data.user.project,
+              avatar: binAvatar
             })
-
             resolve(response)
           })
           .catch(error => {

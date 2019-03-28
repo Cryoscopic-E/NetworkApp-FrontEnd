@@ -42,7 +42,7 @@ export default {
           this.$router.push({ name: "project" });
         })
         .catch(error => {
-          this.error = error.data;
+          this.error = "Check the credentials";
         });
     }
   }

@@ -2,7 +2,6 @@
   <div class="login-wrapper">
     <div class="login-left">
       <img height="400" alt="application logo" src="../../assets/logo.png">
-      <a href="http://validator.w3.org/check/referer" rel="nofollow" title="Validate as HTML5">HTML5</a>
     </div>
     <form action="#" class="login-right" @submit.prevent="signup">
       <h4>Signup</h4>

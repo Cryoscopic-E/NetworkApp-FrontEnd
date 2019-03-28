@@ -19,7 +19,7 @@ Vue.use(vueMoment)
 Vue.use(VueRouter)
 Vue.use(new vueIO({
   debug: true,
-  connection: 'http://127.0.0.1:4000',
+  connection: 'https://na-backend-server.herokuapp.com',
   vuex: {
     store,
     actionPrefix: "SOCKET_",

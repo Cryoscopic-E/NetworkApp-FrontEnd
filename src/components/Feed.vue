@@ -17,7 +17,11 @@
           <i class="fas fa-trash-alt" @click="deletePost(post)"></i>
         </div>
         <div class="post-media">
-          <img v-if="post.image" alt="post image" v-bind:src="'data:image/png;base64,'+ btoa(post.image.data)">
+          <img
+            v-if="post.image"
+            alt="post image"
+            v-bind:src="'data:image/png;base64,'+ btoa(post.image.data)"
+          >
         </div>
         <div class="post-body">
           <p class="post-text">{{post.text}}</p>
@@ -41,8 +45,11 @@ export default {
       .dispatch("getPostsInProject")
       .then(response => {
         this.posts = response;
+        console.log(this.posts);
       })
-      .catch(error => {});
+      .catch(error => {
+        console.log(error);
+      });
   },
   sockets: {
     post({ post, author, avatar }) {
