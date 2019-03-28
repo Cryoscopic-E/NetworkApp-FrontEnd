@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrapper">
     <div class="login-left">
-      <img height="400" src="../../assets/logo.png">
+      <img height="400" alt="application logo" src="../../assets/logo.png">
     </div>
     <form action="#" class="login-right" @submit.prevent="login">
       <h4>Login</h4>
@@ -42,7 +42,7 @@ export default {
           this.$router.push({ name: "project" });
         })
         .catch(error => {
-          this.error = error.response.data;
+          this.error = error.data;
         });
     }
   }

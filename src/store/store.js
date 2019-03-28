@@ -165,7 +165,7 @@ export const store = new Vuex.Store({
           })
           .catch(error => {
             console.log(error)
-            reject(error)
+            reject(error.response)
           })
       })
     }
