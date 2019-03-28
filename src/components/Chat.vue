@@ -7,20 +7,12 @@
       <div id="log" class="chatlogs" v-chat-scroll>
         <template v-for="m in messages">
           <div class="chat self" v-if="m.from === me">
-            <!-- <div class="user-photo">
-              <img height="60" alt="me avatar" :src="require(`@/assets/${settings.avatar}`)">
-            </div>-->
-
             <p class="chat-message primary-bg">
               <span style="font-size:10px">Me:</span>
               {{m.message}}
             </p>
           </div>
           <div class="chat friend" v-if="m.from !== me">
-            <!-- <div class="user-photo">
-              <img height="60" alt="me avatar" :src="require(`@/assets/${settings.avatar}`)">
-            </div>-->
-
             <p class="chat-message secondary-bg">
               <span style="font-size:10px">{{m.from}}:</span>
               {{m.message}}
@@ -49,7 +41,17 @@
       <ul>
         <li v-for="user in users">
           <div class="contact">
-            <div class="user-name">{{user.username}}</div>
+            <div class="user-name">
+              <div class="image-circle">
+                <img
+                  v-if="user.avatar"
+                  width="40"
+                  height="40"
+                  v-bind:src="'data:image/png;base64,'+ user.avatar"
+                >
+              </div>
+              {{user.username}}
+            </div>
           </div>
         </li>
       </ul>
@@ -98,6 +100,15 @@ export default {
 };
 </script>
 <style>
+.image-circle {
+  width: 40px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 30px;
+}
+.image-circle img {
+  border-radius: 30px;
+}
 ul {
   list-style-type: none;
 }
@@ -136,16 +147,7 @@ ul {
   flex-flow: row wrap;
   align-items: flex-start;
 }
-.chat .user-photo {
-  width: 50px;
-  height: 50px;
-  background: #ccc;
-  border-radius: 50%;
-  overflow: hidden;
-}
-.chat .user-photo img {
-  width: 100%;
-}
+
 .chat .chat-message {
   width: 300px;
   padding: 15px;
@@ -196,7 +198,6 @@ ul {
   padding: 8px;
   position: fixed;
   right: 0px;
-  background: lightgray;
   border-left: 1px gray solid;
 }
 @media screen and (max-width: 1700px) {
@@ -211,15 +212,9 @@ ul {
   border-radius: 30px;
 }
 .user-name {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
+  flex-direction: row;
   justify-content: center;
-}
-.user-photo {
-  margin-right: 8px;
-}
-.user-photo img {
-  border-radius: 30px;
 }
 </style>
 

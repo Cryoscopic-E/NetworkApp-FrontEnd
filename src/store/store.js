@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
     token: localStorage.getItem('auth-token') || null,
     username: localStorage.getItem('username') || null,
     project: localStorage.getItem('project') || null,
+    avatar: localStorage.getItem('avatar') || null,
     socket: null
   },
   getters: {
@@ -27,22 +28,31 @@ export const store = new Vuex.Store({
         return state.username;
       }
       return "";
+    },
+    getAvatar(state) {
+      if (state.avatar !== null) {
+        return state.avatar
+      }
+      return null
     }
   },
   mutations: {
     retrieveToken(state, {
       token,
       username,
-      project
+      project,
+      avatar
     }) {
       state.token = token;
       state.username = username;
       state.project = project
+      state.avatar = avatar
     },
     destroyToken(state) {
       state.token = null;
       state.username = "";
       state.project = "";
+      state.avatar = null;
     }
   },
   actions: {
@@ -58,9 +68,16 @@ export const store = new Vuex.Store({
     },
     createNewPost(context, postData) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      let data = new FormData()
+      data.append('image', postData.image)
+      data.append('text', postData.text)
+
       return new Promise((resolve, reject) => {
-        axios.post('/createPost', {
-          text: postData.text
+        axios.post('/createPost', data, {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
         }).then(res => {
           resolve(res.data)
         }).catch(rej => {
@@ -81,11 +98,16 @@ export const store = new Vuex.Store({
     },
     signup(context, data) {
       return new Promise((resolve, reject) => {
-        axios.post('/signup', {
-            username: data.username,
-            email: data.email,
-            project: data.project,
-            password: data.password
+        let userData = new FormData()
+        userData.append('username', data.username)
+        userData.append('avatar', data.avatar)
+        userData.append('email', data.email)
+        userData.append('project', data.project)
+        userData.append('password', data.password)
+        axios.post('/signup', userData, {
+            headers: {
+              'content-type': 'multipart/form-data'
+            }
           })
           .then(response => {
             resolve(response)
@@ -105,6 +127,7 @@ export const store = new Vuex.Store({
               localStorage.removeItem('auth-token')
               localStorage.removeItem('username')
               localStorage.removeItem('project')
+              localStorage.removeItem('avatar')
               context.commit('destroyToken')
 
               resolve(response)
@@ -128,10 +151,11 @@ export const store = new Vuex.Store({
           })
           .then(response => {
             const token = response.data.token
-
+            console.log(response.data.user)
             localStorage.setItem('auth-token', token)
             localStorage.setItem('username', response.data.user.username)
             localStorage.setItem('project', response.data.user.project)
+            localStorage.setItem('avatar', window.atob(response.data.user.avatar))
             context.commit('retrieveToken', {
               token,
               ...response.data.user

@@ -8,7 +8,7 @@
     </div>
     <div class="new-post-actions">
       <form action>
-        <input type="file" id="imgupload" style="display:none">
+        <input type="file" id="imgupload" style="display:none" @change="setImage">
         <i class="far fa-images icon" @click="uploadImage"></i>
       </form>
       <button class="primary-bg default-border-radius" id="add-post" @click="submitNewPost">Add Post</button>
@@ -19,6 +19,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      image: null
+    };
+  },
   methods: {
     submitNewPost() {
       const text = document.querySelector("#post-text").value;
@@ -27,18 +32,24 @@ export default {
         return;
       } else {
         this.$store
-          .dispatch("createNewPost", { text })
+          .dispatch("createNewPost", { text: text, image: this.image })
           .then(res => {
             this.$socket.emit("newPost", {
               post: res,
+              author: this.$store.getters.getUserName,
+              avatar: this.$store.getters.getAvatar,
               room: this.$store.getters.getProjectName
             });
+            this.image = null;
           })
           .catch(err => {});
       }
     },
     uploadImage() {
-      document.querySelector("#imgupload").trigger("click");
+      document.querySelector("#imgupload").click();
+    },
+    setImage(event) {
+      this.image = event.target.files[0];
     }
   }
 };

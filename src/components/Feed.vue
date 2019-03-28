@@ -3,11 +3,16 @@
     <ul class="feed">
       <li v-for="post in posts" class="post default-border default-shadow">
         <div class="post-author">
+          <div class="image-circle">
+            <img
+              v-if="post.avatar"
+              width="40"
+              height="40"
+              v-bind:src="'data:image/png;base64,'+ btoa(post.avatar)"
+            >
+          </div>
           {{post.author}}
           <span style="font-size:10px">{{post.createdAt | moment("Do MMM YYYY")}}</span>
-          <!-- <div class="post-author-avatar">
-          <img height="60" alt="post author avatar" src> Lorenzo James
-          </div>-->
 
           <i class="fas fa-trash-alt" @click="deletePost(post)"></i>
         </div>
@@ -35,12 +40,14 @@ export default {
     this.$store
       .dispatch("getPostsInProject")
       .then(response => {
-        this.posts = response.reverse();
+        this.posts = response;
       })
       .catch(error => {});
   },
   sockets: {
-    post({ post }) {
+    post({ post, author, avatar }) {
+      post.author = author;
+      post.avatar = avatar;
       this.posts.unshift(post);
     },
     postRemoved({ id }) {
@@ -106,9 +113,18 @@ ul {
 .post-author {
   padding: 4px;
   font-size: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
   border-bottom: 1px grey solid;
 }
-.post-author-avatar img {
+.image-circle {
+  width: 40px;
+  height: 40px;
+  border: 1px solid grey;
+  border-radius: 30px;
+}
+.image-circle img {
   border-radius: 30px;
 }
 .post-media video {

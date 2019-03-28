@@ -21,6 +21,10 @@
         <input type="password" id="Password" placeholder="Password" v-model="password" required>
         <label for="Password">Password</label>
       </div>
+      <div class="form-group">
+        <span style="font-size:15px">Select your avatar</span>
+        <input type="file" @change="setImage">
+      </div>
       <div class="button-area">
         <button type="submit" class="btn btn-primary pull-right">Signup</button>
       </div>
@@ -38,7 +42,8 @@ export default {
       email: "",
       project: "",
       password: "",
-      serverError: ""
+      serverError: "",
+      avatar: undefined
     };
   },
   methods: {
@@ -48,15 +53,20 @@ export default {
           username: this.username,
           email: this.email,
           project: this.project,
-          password: this.password
+          password: this.password,
+          avatar: this.avatar
         })
         .then(response => {
+          this.avatar = undefined;
           this.$router.push({ name: "login" });
         })
         .catch(error => {
-          this.serverError = error.response.data;
+          this.serverError = error;
           this.password = "";
         });
+    },
+    setImage(ev) {
+      this.avatar = ev.target.files[0];
     }
   }
 };
