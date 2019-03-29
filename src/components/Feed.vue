@@ -13,7 +13,7 @@
           </div>
           {{post.author}}
           <span style="font-size:10px">{{post.createdAt | moment("Do MMM YYYY")}}</span>
-
+          
           <i class="fas fa-trash-alt" @click="deletePost(post)"></i>
         </div>
         <div class="post-media">
@@ -45,7 +45,6 @@ export default {
       .dispatch("getPostsInProject")
       .then(response => {
         this.posts = response;
-        console.log(this.posts);
       })
       .catch(error => {
         console.log(error);
@@ -76,6 +75,9 @@ export default {
         .catch(error => {});
     },
     btoa(bin) {
+      if (typeof bin === "string") {
+        return bin;
+      }
       return Buffer.from(bin, "binary").toString("base64");
     }
   }

@@ -131,8 +131,6 @@ export const store = new Vuex.Store({
               context.commit('destroyToken')
 
               resolve(response)
-              // console.log(response);
-              // context.commit('addTodo', response.data)
             })
             .catch(error => {
               localStorage.removeItem('auth-token')
@@ -152,20 +150,22 @@ export const store = new Vuex.Store({
           .then(response => {
             const token = response.data.token
             localStorage.setItem('auth-token', token)
+
             localStorage.setItem('username', response.data.user.username)
+
             localStorage.setItem('project', response.data.user.project)
-            const binAvatar = window.atob(response.data.user.avatar)
-            localStorage.setItem('avatar', binAvatar)
+
+            localStorage.setItem('avatar', response.data.user.avatar)
+
             context.commit('retrieveToken', {
               token: token,
               username: response.data.user.username,
               project: response.data.user.project,
-              avatar: binAvatar
+              avatar: response.data.user.avatar
             })
             resolve(response)
           })
           .catch(error => {
-            console.log(error)
             reject(error.response)
           })
       })

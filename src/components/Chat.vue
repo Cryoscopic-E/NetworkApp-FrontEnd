@@ -22,16 +22,18 @@
       </div>
 
       <div class="chat-form">
-        <input
-          id="messageArea"
-          placeholder="Message"
-          type="text"
-          name="message"
-          required
-          autocomplete="off"
-          @submit="newMessage"
-        >
-        <button class="primary-bg default-border-radius" @click="newMessage">Send</button>
+        <form>
+          <input
+            id="messageArea"
+            placeholder="Message"
+            type="text"
+            name="message"
+            required
+            autocomplete="off"
+            @submit="newMessage"
+          >
+          <button class="primary-bg default-border-radius" @click="newMessage">Send</button>
+        </form>
       </div>
     </div>
     <div class="contact-list">
@@ -163,7 +165,11 @@ ul {
 .chat-form {
   margin-top: 20px;
   display: inline-flex;
+  flex-direction: row;
   align-items: flex-start;
+}
+.chat-form form {
+  display: inline-flex;
 }
 .chat-form input {
   background: #fbfbfb;
